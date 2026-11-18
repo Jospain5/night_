@@ -12,15 +12,16 @@ body{ background:#0A1128 !important; color:#F0EDE8 !important; margin:0; font-fa
 #page-messages.active{ display:flex !important; flex-direction:column; height:100vh; background:#0A1128 !important; }
 .feed-top-bar{ height:56px; background:#0F1A32; border-bottom:1px solid #1C2A4A; display:flex; align-items:center; padding:0 18px; position:sticky; top:0; z-index:10; }
 .feed-logo{ font-size:26px; font-weight:900; letter-spacing:4px; color:#FFD88A; text-shadow:0 0 12px #FFD88A; }
-.story-ring{ width:62px; height:62px; border-radius:50%; padding:3px; position:relative; }
+.story-ring{ box-sizing:border-box; width:var(--sw); height:var(--sh); border-radius:18px; padding:4px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
 .story-ring.dotted{ border:2.5px dashed #FFD88A; box-shadow:0 0 12px #FFD88A,0 0 25px rgba(255,216,138,0.4); animation:pulse 1.8s infinite; background:transparent; }
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block; width:14px; height:14px; border:2px solid rgba(10,16,32,0.25); border-top-color:#0A1020; border-radius:50%; animation:spin 0.8s linear infinite; vertical-align:-2px;}
 @keyframes pulse{0%,100%{box-shadow:0 0 10px #FFD88A}50%{box-shadow:0 0 22px #FFD88A}}
-.story-ring img{ width:100%; height:100%; border-radius:50%; border:3px solid #0A1020; object-fit:cover; }
-.story-ring.plus{ background:#151D2F; display:flex; align-items:center; justify-content:center; font-size:26px; color:#FFD88A; }
-.stories-bar{ display:flex; gap:14px; overflow-x:auto; padding:12px 18px; scrollbar-width:none; }
-.story-circle{ min-width:70px; text-align:center; cursor:pointer; color:#F0EDE8; }
+.story-ring img{ box-sizing:border-box; display:block; width:100%; height:100%; border-radius:12px; border:0; object-fit:cover; object-position:center; }
+.story-ring.plus{ background:#151D2F; display:flex; align-items:center; justify-content:center; font-size:32px; color:#FFD88A; }
+.stories-bar{ --sw:92px; --sh:128px; display:flex; align-items:flex-start; gap:12px; overflow-x:auto; padding:12px 18px; scrollbar-width:none; }
+.story-circle{ flex:0 0 auto; width:var(--sw); text-align:center; cursor:pointer; color:#F0EDE8; }
+.story-circle small{ display:block; margin-top:7px; font-size:11px; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .btn-publish-plus{ width:46px; height:46px; border-radius:50%; background:#FFD88A; border:none; font-size:22px; position:relative; }
 .btn-publish-plus::after{ content:''; position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px; border-radius:50%; border:2px dashed #FFD88A; box-shadow:0 0 12px #FFD88A; }
 .cover{ height:130px; background: linear-gradient(90deg,#1A2A4A,#2A3A5A); position:relative; overflow:hidden; }
@@ -65,6 +66,7 @@ body{ background:#0A1128 !important; color:#F0EDE8 !important; margin:0; font-fa
 <button type="button" id="rulesOpenBtn" onclick="showRules(event, true)" style="width:100%; padding:12px; background:#1C2A4A; border:1px solid #FFD88A; color:#FFD88A; border-radius:20px; font-weight:bold;">📜 Lire et accepter les règles (obligatoire)</button>
 <input type="checkbox" id="termsCheck" style="display:none;">
 <div id="rulesStatus" style="color:#9AA4B2; font-size:11px; margin-top:6px; text-align:center;">Âge minimum : 15 ans (accord de tes parents avant 18 ans).</div>
+<div style="text-align:center; font-size:11px; margin-top:6px;"><u style="color:#FFD88A; cursor:pointer;" onclick="showLegal('privacy', event)">Politique de confidentialité</u> • <u style="color:#FFD88A; cursor:pointer;" onclick="showLegal('legal', event)">Mentions légales</u></div>
 </div>
 <button id="signupBtn" onclick="signup()" style="padding:14px; background:#FFD88A; border:none; border-radius:25px; font-weight:bold;">Créer un compte</button>
 <span onclick="showPage('page-home')" style="text-align:center; color:#7A8BB0; cursor:pointer; margin-top:10px;">← Déjà un compte ?</span>
@@ -123,8 +125,80 @@ body{ background:#0A1128 !important; color:#F0EDE8 !important; margin:0; font-fa
 <div style="padding:10px 16px 14px; border-top:1px solid #2A3A5A;">
 <div id="rulesHint" style="display:none; color:#FFD88A; font-size:12px; text-align:center; margin-bottom:8px;">⬇️ Fais défiler jusqu’en bas pour pouvoir accepter.</div>
 <button id="rulesAcceptBtn" onclick="acceptRules()" style="display:none; width:100%; padding:12px; background:#FFD88A; border:none; border-radius:20px; font-weight:bold; margin-bottom:8px; opacity:0.4;" disabled>✅ J’ai lu et j’accepte les 21 règles</button>
+<div style="text-align:center; font-size:12px; margin-bottom:8px;"><u style="color:#FFD88A; cursor:pointer;" onclick="showLegal('privacy', event)">Politique de confidentialité</u> • <u style="color:#FFD88A; cursor:pointer;" onclick="showLegal('legal', event)">Mentions légales</u></div>
 <button onclick="hideRules()" style="width:100%; padding:10px; background:transparent; border:1px solid #2A3A5A; color:#9AA4B2; border-radius:20px;">Fermer</button>
 </div>
+</div>
+</div>
+<div id="legal-privacy" style="display:none;"><p style="margin-bottom:8px;">Version 1 • novembre 2026</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">1. Qui est responsable de tes données ?</h4>
+<p style="margin-bottom:8px;">NIGHT est un réseau social édité par son fondateur, qui est le responsable du traitement. Pour toute question sur tes données : <b class="rules-contact"></b></p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">2. Quelles données collectons-nous ?</h4>
+<ul style="padding-left:18px; margin-bottom:8px;">
+<li style="margin-bottom:5px;"><b>Compte</b> : adresse email, mot de passe (géré par Google Firebase : nous ne le voyons jamais), pseudo, date de création, version des règles acceptées et date d’acceptation.</li>
+<li style="margin-bottom:5px;"><b>Profil</b> : photo de profil et photo de couverture (facultatives).</li>
+<li style="margin-bottom:5px;"><b>Contenus</b> : posts (texte, photo, vocal), commentaires, likes, stories.</li>
+<li style="margin-bottom:5px;"><b>Relations</b> : abonnements, abonnés, notifications.</li>
+<li style="margin-bottom:5px;"><b>Messages privés</b> : demandes de discussion et messages échangés entre abonnés mutuels.</li>
+<li style="margin-bottom:5px;"><b>Présence</b> : indication « en ligne / hors ligne », visible uniquement par tes abonnés mutuels.</li>
+<li style="margin-bottom:5px;"><b>Modération</b> : signalements que tu envoies ou qui te concernent, sanctions éventuelles.</li>
+<li style="margin-bottom:5px;"><b>Données techniques</b> : adresse IP et informations sur ton appareil, traitées automatiquement par nos hébergeurs (Google Firebase et GitHub Pages) pour faire fonctionner et sécuriser le service. NIGHT ne les consulte pas et ne s’en sert pas pour te suivre.</li>
+</ul>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">3. Pourquoi ?</h4>
+<ul style="padding-left:18px; margin-bottom:8px;">
+<li style="margin-bottom:5px;">Créer ton compte et faire fonctionner NIGHT (publier, discuter, s’abonner).</li>
+<li style="margin-bottom:5px;">Assurer la sécurité et la modération (signalements, masquage, bannissement).</li>
+<li style="margin-bottom:5px;">Respecter la loi et répondre aux demandes des autorités.</li>
+</ul>
+<p style="margin-bottom:8px;">NIGHT n’a aucune publicité, aucune analyse d’audience, et ne vend jamais tes données. Fondement : ton consentement, donné à l’inscription, et la nécessité d’assurer le service et la sécurité.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">4. Qui peut voir tes données ?</h4>
+<ul style="padding-left:18px; margin-bottom:8px;">
+<li style="margin-bottom:5px;"><b>Les autres membres</b> : ton pseudo, ta photo, tes posts, stories, commentaires et abonnements. Tes messages privés ne sont visibles que par toi et ton correspondant.</li>
+<li style="margin-bottom:5px;"><b>L’équipe de modération</b> : uniquement les contenus signalés et les informations nécessaires à la modération.</li>
+<li style="margin-bottom:5px;"><b>Nos prestataires techniques</b> : Google (Firebase : connexion et base de données) et GitHub (hébergement du site).</li>
+<li style="margin-bottom:5px;"><b>Les autorités</b>, sur demande légale.</li>
+</ul>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">5. Hébergement et transferts hors du Bénin</h4>
+<p style="margin-bottom:8px;">Les services de Google et de GitHub utilisent des serveurs situés hors du Bénin. En créant un compte, tu acceptes ce transfert, nécessaire au fonctionnement de NIGHT. Ces prestataires appliquent leurs propres conditions de protection des données.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">6. Combien de temps ?</h4>
+<ul style="padding-left:18px; margin-bottom:8px;">
+<li style="margin-bottom:5px;">Compte et contenus : tant que ton compte existe. Après une demande de suppression, nous effaçons tout en 72 h maximum.</li>
+<li style="margin-bottom:5px;">Stories : visibles 7 heures.</li>
+<li style="margin-bottom:5px;">Signalements et sanctions : conservés jusqu’à 12 mois après leur traitement, pour protéger la communauté et justifier nos décisions.</li>
+<li style="margin-bottom:5px;">Nos prestataires peuvent conserver des copies de sécurité pendant une courte durée.</li>
+</ul>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">7. Tes droits</h4>
+<p style="margin-bottom:8px;">Tu as le droit d’accéder à tes données, de les corriger, de demander leur suppression (droit à l’oubli) et de t’opposer à leur traitement. Écris à <b class="rules-contact"></b> depuis l’adresse email de ton compte. Nous répondons sous 1 mois maximum (suppression : 72 h maximum).</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">8. Cookies et traceurs</h4>
+<p style="margin-bottom:8px;">NIGHT n’utilise aucun cookie publicitaire ni d’audience. Ton navigateur conserve seulement des données techniques nécessaires : ta session de connexion Firebase et ton pseudo. Tu peux les effacer en te déconnectant ou depuis les réglages de ton navigateur.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">9. Mineurs</h4>
+<p style="margin-bottom:8px;">NIGHT est interdit aux moins de 15 ans. Entre 15 et 18 ans, l’accord des parents ou du tuteur est requis. Un compte d’enfant de moins de 15 ans est supprimé dès que nous le découvrons.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">10. Sécurité</h4>
+<p style="margin-bottom:8px;">Connexion chiffrée (HTTPS), mots de passe gérés par Firebase, règles d’accès strictes (chacun ne voit que ce qu’il doit voir), email vérifié pour publier, accès de modération limité à une liste de comptes, bannissement des abus. Aucun système n’étant infaillible, nous informerons l’APDP et les personnes concernées dans les meilleurs délais en cas d’incident grave.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">11. Réclamation</h4>
+<p style="margin-bottom:8px;">Si tu estimes que tes droits ne sont pas respectés, tu peux saisir l’Autorité de Protection des Données Personnelles (APDP) : contact@apdp.bj • +229 21 32 57 88 / 69 55 00 00 • BP 01BP04837 • siège à Aïdjèdo, rue 6.076, Cotonou • https://apdp.bj</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">12. Modifications</h4>
+<p style="margin-bottom:8px;">Nous pouvons modifier cette politique. Les changements importants sont annoncés au moins 7 jours avant leur entrée en vigueur.</p></div>
+<div id="legal-legal" style="display:none;"><h4 style="color:#FFD88A; margin:14px 0 6px;">Éditeur</h4>
+<p style="margin-bottom:8px;">Le service NIGHT est édité à titre non professionnel par son fondateur, dont l’identité est communiquée à l’APDP et aux autorités sur demande légale. Contact : <b class="rules-contact"></b></p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">Hébergeurs</h4>
+<ul style="padding-left:18px; margin-bottom:8px;">
+<li style="margin-bottom:5px;"><b>Site</b> : GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</li>
+<li style="margin-bottom:5px;"><b>Base de données et connexion</b> : Google Firebase, Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis.</li>
+</ul>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">Contenus des membres</h4>
+<p style="margin-bottom:8px;">Chaque membre est responsable de ce qu’il publie (règle 4). NIGHT agit comme hébergeur : tout contenu illégal signalé est retiré en moins de 24 h (règle 10).</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">Signaler un contenu</h4>
+<p style="margin-bottom:8px;">Utilise le bouton 🚩 ou écris à <b class="rules-contact"></b></p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">Loi applicable</h4>
+<p style="margin-bottom:8px;">Droit béninois, notamment la loi n° 2017-20 du 20 avril 2018 portant Code du numérique en République du Bénin.</p>
+<h4 style="color:#FFD88A; margin:14px 0 6px;">Protection des données</h4>
+<p style="margin-bottom:8px;">Consulte la politique de confidentialité de NIGHT.</p></div>
+<div id="legalModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,17,40,0.97); z-index:10002; align-items:center; justify-content:center; padding:12px;">
+<div style="background:#151E34; border:1px solid #2A3A5A; border-radius:16px; width:100%; max-width:380px; max-height:94%; display:flex; flex-direction:column; color:#F0EDE8;">
+<div style="padding:14px 16px 8px;"><h3 id="legalTitle" style="color:#FFD88A;"></h3></div>
+<div id="legalBody" style="padding:0 16px 10px; overflow-y:auto; flex:1; font-size:13px; line-height:1.55;"></div>
+<div style="padding:10px 16px 14px; border-top:1px solid #2A3A5A;"><button onclick="hideLegal()" style="width:100%; padding:10px; background:#FFD88A; border:none; border-radius:20px; font-weight:bold;">Fermer</button></div>
 </div>
 </div>
 <div id="forgotBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,17,40,0.9); z-index:10000; align-items:center; justify-content:center; padding:20px;">
@@ -183,6 +257,7 @@ body{ background:#0A1128 !important; color:#F0EDE8 !important; margin:0; font-fa
 <div class="avatar-wrap"><img id="myAvatarImg" class="avatar-centered" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="margin: -45px 0 0 0; object-fit:cover;"><button class="avatar-change" onclick="document.getElementById('avatarInput').click()">📷</button></div>
 <div style="text-align:center;"><h3 id="profileName" style="color:#F0EDE8;">@moi</h3></div>
 <div class="profile-counters"><div class="counter-box"><b id="myFollowers">0</b><small>ABONNÉS</small></div><div class="counter-box"><b id="myFollowing">0</b><small>ABONNEMENTS</small></div><div class="counter-box"><b id="myLikes">0</b><small>LIKES</small></div></div>
+<div style="text-align:center; font-size:11px; margin:6px 0 12px; color:#9AA4B2;"><u style="cursor:pointer;" onclick="showRules(event)">Règles</u> • <u style="cursor:pointer;" onclick="showLegal('privacy', event)">Politique de confidentialité</u> • <u style="cursor:pointer;" onclick="showLegal('legal', event)">Mentions légales</u></div>
 <div id="myStoryBadge" style="display:none; text-align:center; margin:10px;"><span style="padding:6px 12px; background:#151D2F; border:1.5px dashed #FFD88A; border-radius:20px; color:#FFD88A; font-size:12px;">🌕 Ta story active - <span id="myStoryViews">0 Vu</span></span></div>
 <div id="profilePosts" style="padding:10px 18px; display:flex; flex-direction:column; gap:12px;"></div>
 </div>
@@ -353,10 +428,17 @@ function renderAllPosts(){
   const ml = document.getElementById('myLikes'); if(ml) ml.textContent = myLikesCount();
   if(currentViewUid){ const ol = document.getElementById('otherLikes'); if(ol) ol.textContent = allPosts.filter(function(p){ return p.authorUid === currentViewUid; }).reduce(function(a, p){ return a + p.likes; }, 0); }
 }
+var expandedComments = {};
+function toggleComments(id){ expandedComments[id] = !expandedComments[id]; renderAllPosts(); }
 function createPostHTMLInner(post, isMine){
   const liked = !!myUid && post.likedBy.indexOf(myUid) !== -1;
   const del = (isMine || myIsAdmin) ? `<span style="float:right; color:#FF3B5C; cursor:pointer; font-size:12px;" onclick="deletePost('${post.id}')">🗑 Supprimer</span>` : '';
-  const commentsHTML = post.comments.map(c => `<div style="margin-top:8px; padding:8px; background:#0A1128; border-radius:8px; font-size:13px; border-left:2px solid #FFD88A; color:#F0EDE8; word-break:break-word;">${(myUid && c.uid !== myUid) ? `<span style="float:right; cursor:pointer; opacity:0.7;" onclick="reportComment('${post.id}', ${Number(c.time) || 0}, '${esc(c.uid || '')}')">🚩</span>` : ''}<b style="color:#E6C87A;">${esc(c.user)}</b> ${esc(c.text)}</div>`).join('');
+  const totalC = post.comments.length;
+  const openC = !!expandedComments[post.id];
+  const shownC = openC ? post.comments : post.comments.slice(-2);
+  const commentRows = shownC.map(c => `<div style="display:flex; gap:8px; align-items:flex-start; margin-top:10px;"><img src="${avatarFor(c.uid, c.user)}" style="width:30px; height:30px; border-radius:50%; object-fit:cover; flex-shrink:0;"><div style="min-width:0; flex:1;"><div style="background:#0F1A32; border:1px solid #1C2A4A; border-radius:14px; padding:8px 12px; word-break:break-word;"><b style="color:#E6C87A; font-size:12px;">${esc(c.user)}</b><div style="font-size:13px; color:#F0EDE8; margin-top:2px; line-height:1.4;">${esc(c.text)}</div></div><div style="display:flex; gap:12px; align-items:center; margin:3px 0 0 10px; font-size:11px; color:#7A8BB0;">${c.time ? `<span>${esc(timeAgo(Number(c.time)))}</span>` : ''}${(myUid && c.uid !== myUid) ? `<span style="cursor:pointer;" onclick="reportComment('${post.id}', ${Number(c.time) || 0}, '${esc(c.uid || '')}')">🚩 Signaler</span>` : ''}</div></div></div>`).join('');
+  const moreLink = totalC > 2 ? `<div style="margin-top:10px; color:#9AA4B2; font-size:12px; cursor:pointer;" onclick="toggleComments('${post.id}')">${openC ? 'Réduire les commentaires' : 'Voir les ' + totalC + ' commentaires'}</div>` : '';
+  const commentsHTML = totalC ? `<div style="margin-top:12px; padding-top:4px; border-top:1px solid #1C2A4A;">${moreLink}${commentRows}</div>` : '';
   const imgOk = post.img && post.img.indexOf('data:image/jpeg;base64,') === 0;
   const audioOk = typeof post.audio === 'string' && post.audio.length < 300000 && AUDIO_RE.test(post.audio);
   return `${del}<div><div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="viewUserById('${esc(post.authorUid || '')}')"><img src="${avatarFor(post.authorUid, post.user)}" style="width:34px; height:34px; border-radius:50%; object-fit:cover;"><b style="color:#E6C87A;">${esc(post.user)}</b></div><div style="margin:8px 0; color:#F0EDE8; white-space:pre-wrap; word-break:break-word;">${esc(post.text)}</div>${imgOk ? `<img src="${post.img}" style="width:100%; border-radius:10px; margin:8px 0;"><br>` : ''}${audioOk ? `<audio controls preload="none" src="${post.audio}" style="width:100%; margin:8px 0;"></audio>` : ''}<div style="display:flex; gap:15px; margin-top:8px; color:#F0EDE8;"><span onclick="likePost('${post.id}')" style="cursor:pointer;">${liked ? '❤️' : '🤍'} ${post.likes}</span><span style="cursor:pointer;" onclick="commentPost('${post.id}')">💬 ${post.comments.length}</span>${isMine ? '' : `<span style="margin-left:auto; cursor:pointer; opacity:0.75;" onclick="reportPost('${post.id}')">🚩</span>`}</div><div>${commentsHTML}</div></div>`;
@@ -1281,6 +1363,18 @@ async function restoreReported(r, info){
     info.innerHTML = '<small style="color:#7ED9A0;">✅ Contenu rétabli (marqué comme vérifié)</small>';
   }catch(e){ info.innerHTML = '<small style="color:#FF3B5C;">' + esc(traduireErreur(e)) + '</small>'; }
 }
+function showLegal(which, e){
+  if(e && e.stopPropagation){ e.stopPropagation(); e.preventDefault(); }
+  var src = document.getElementById('legal-' + which);
+  document.getElementById('legalTitle').textContent = which === 'privacy' ? '🔒 Politique de confidentialité' : '⚖️ Mentions légales';
+  var body = document.getElementById('legalBody');
+  body.innerHTML = src ? src.innerHTML : '';
+  var list = document.querySelectorAll('.rules-contact');
+  for(var i = 0; i < list.length; i++){ list[i].textContent = CONTACT_EMAIL; }
+  body.scrollTop = 0;
+  document.getElementById('legalModal').style.display = 'flex';
+}
+function hideLegal(){ document.getElementById('legalModal').style.display = 'none'; }
 function convIdOf(a, b){ return [a, b].sort().join('_'); }
 function msgTime(m){ return (m.createdAt && m.createdAt.toMillis) ? m.createdAt.toMillis() : Date.now(); }
 function ensureUserDoc(u, pseudo){
